@@ -51,45 +51,40 @@
 
 				<section data-markdown>
 					<script type="text/template">
-						#History
+						###History
 						- Created by Mozilla
 						- Officially unvieled in 2010
 						- Systems language
 						- Guarentied memory safety
 						- Imperitive with funtional and OO aspects
+						- Still a work-in-progress
 					</script>
 				</section>
 
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>
-							Slides can be nested inside of other slides,
-							try pressing <a href="#" class="navigate-down">down</a>.
-						</p>
-						<a href="#" class="image navigate-down">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 3</h2>
-						<p>That's it, time to go back up.</p>
-						<a href="#/2" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
-					</section>
+				<section data-markdown>
+					<script type="text/template">
+						###Basic Syntax
+						Simple program
+						```
+						fn main() {
+						    let mut i = 0;
+						    while i < 10 {
+						        println!("i = {}", i); 
+						    }
+						}
+						```
+
+						Funtion definition
+						```
+						fn double_max(a, b: int) -> int {
+						    if a > b {
+						        a*2
+						    } else {
+						        b*2
+						    }
+						}
+						```
+					</script>					
 				</section>
 
 				<section>
