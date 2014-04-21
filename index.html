@@ -176,6 +176,102 @@
 					</script>
 				</section>
 
+				<section data-markdown>
+					<script type="text/template">
+						##Pointers
+						- Similar to C pointers, introduce very lttle overhead.
+						- Recommended to avoid using if possible.
+						- 3 types: Owned pointers, managed, and references.
+						- <code>*</code> used to dereference.
+						
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						##Owned Pointers
+						- Only one owned pointer may exist to a place in memory (it can be borrowed however, more on that later).
+						- Not garbage collected, rust uses static analysis to determine when to allocate and deallocate this memory.
+						- 3 use cases:
+							- References to traits.
+							- Recursive data structures.
+							- Efficiency (but only as a last resort).
+						
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						##Owned Pointer Example
+						```rust
+						struct BinaryTree {
+							val: int,
+							left: Option<~BinaryTree>,
+							right: Option<~BinaryTree>
+						}
+						let r = ~BinaryTree { val: 13, left: None, right: None };
+						let tree = BinaryTree { val: 12, left: None, right: Some(r) };
+						```
+						
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						##Managed Pointers
+						- Used when having a single owner is not possible.
+						- Cannot share across tasks. 
+						- Cause the rust garbage collector to be used, so they should be avoided unless absolutely necesary.
+							- <code>@</code> defines a managed pointer, but is deprecated.
+							- <code>std::rc::Rc</code> and <code>std::gc::Gc</code> are replacements but still experimental.
+						
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						##Managed Pointer Example
+						This is invalid since the pointer is moved (its ownership would change).
+						```rust
+						let x = ~Point { x: 1.0, y: 2.0 };
+						let y = x;
+
+						println!("{}", x.x);
+						println!("{}", y.x);
+						```
+						This is valid but causes the GC to be enabled, so should be avoided.
+						```rust
+						let x = @Point { x: 1.0, y: 2.0 };
+						let y = x;
+
+						println!("{}", x.x);
+						println!("{}", y.x);
+						```
+						
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						##References
+						- Allow owned pointers to be borrowed. No change in ownership.
+						- Are the exact same as a C pointer at runtime, all safety checks are done at compile time.
+						- Does this through the use of region pointers and lifetimes.
+						
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						##Reference Example
+						```rust
+						fn dist(p1: &Point, p2: &Point) -> f32 {
+							let x_d = p1.x - p2.x;
+							let y_d = p1.y - p2.y;
+
+							sqrt(x_d * x_d + y_d * y_d)
+						}
+
+						let x = Point { x: 1.0, y: 2.0 };
+						let y = Point { x: 10.0, y: 12.0 }
+						```
+						
+					</script>
+				</section>
 			</div>
 
 		</div>
