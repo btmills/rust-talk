@@ -52,9 +52,9 @@
 					<script type="text/template">
 						##Background
 						- System language created by Mozilla
-						- Officially unvieled in 2010
-						- Guarentied memory safety
-						- Imperitive with funtional and OO aspects
+						- Officially unveiled in 2010
+						- Guaranteed memory safety
+						- Imperative with functional and OO aspects
 						- Still a work-in-progress
 					</script>
 				</section>
@@ -69,7 +69,7 @@
 						- Floats: `f32` and `f64`
 						- `int` and `uint` depend on target machine word size
 						- Rust also has `char`s and `str`s
-						
+
 						```
 						let a = 1;         // a is an int
 						let b = 100u;      // b is a uint
@@ -103,7 +103,7 @@
 						    }
 						}
 						```
-					</script>					
+					</script>
 				</section>
 
 				<section data-markdown>
@@ -133,7 +133,7 @@
 						```
 
 						- `;`s are used to suppress result of an expression
-						
+
 						```
 						// won't compile
 						fn three() -> int {
@@ -146,8 +146,8 @@
 						    return 4;
 						}
 						```
-						
-					</script>					
+
+					</script>
 				</section>
 
 				<section data-markdown>
@@ -155,8 +155,8 @@
 						##Closures
 						- closure: a function that can access variables in the enclosing scope
 						- closure syntax supports anonymous functions
-						- functions are first-class citezens
-						
+						- functions are first-class citizens
+
 
 						```
 						let x = 1;
@@ -175,6 +175,181 @@
 						```
 					</script>
 				</section>
+
+				<section data-markdown><script type="text/template">
+					## Modules
+
+					crate (library) contains `mod`ules
+
+					```rust
+					// farm.rs
+					pub fn chicken() { println!("cluck"); }
+
+					pub mod barn {
+						pub fn cow() { println!("moo"); }
+					}
+					```
+
+					import with `use`
+
+					```rust
+					// main.rs
+					use farm::*;
+					mod farm;
+
+					fn main() {
+						chicken();
+						barn::cow();
+					}
+					```
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					## Pattern matching
+
+					- `match` = `select` + `?:` + awesome
+					- no fall-through
+					- each *arm* has a *pattern* and an *expression*
+					- optional *pattern guard* (`if` &lt;expr&gt;)
+					- must be exhaustive
+
+					```rust
+					match num {
+						0     => println!("zero"),
+						1 | 2 => println!("one or two"),
+						3..10 => println!("three to ten"),
+						_     => println!("something else")
+					}
+					```
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					## `struct`s
+
+					similar to C structs
+
+					```rust
+					struct Point {
+						x: f64,
+						y: f64
+					}
+
+					let mut mypoint = Point { x: 1.0, y: 1.0 };
+					mypoint.y += 1.0;
+					```
+
+					support destructuring
+
+					```rust
+					match mypoint {
+						Point { y: 0.0, .. } => println!("x-axis"),
+						Point { x: 0.0, .. } => println!("y-axis"),
+						Point { x, y } if x == y => println(!"diagonal"),
+						_ => println!("elsewhere")
+					}
+					```
+				</script></section>
+
+				<section>
+
+					<section data-markdown><script type="text/template">
+						## `enum`s
+
+						can be like C/C++/C#/Java
+
+						```rust
+						enum Direction {
+							North,
+							East,
+							South,
+							West
+						}
+
+						enum Color {
+							Red   = 0xff0000,
+							Green = 0x00ff00,
+							Blue  = 0x0000ff
+						}
+						```
+					</script></section>
+
+					<section data-markdown><script type="text/template">
+						## Sum type
+
+						aka tagged union or variant type
+
+						```rust
+						enum Shape {
+							Circle(Point, f64),
+							Rectangle(Point, Point)
+						}
+
+						match myshape {
+							Circle(_, _) => println!("circle"),
+							Rectange(_, _) => println!("rectangle")
+						}
+						```
+					</script></section>
+
+					<section data-markdown><script type="text/template">
+						## Methods
+
+						```rust
+						use std::f64;
+
+						impl Shape {
+							fn area (&self) -> f64 {
+								match *self {
+									Circle(_, size) => f64::consts::PI & size & size,
+									Rectange(Point {x, y}, Point {x: x2, y: y2}) => (x2 - x) * (y2 - y)
+								}
+							}
+						}
+						```
+					</script></section>
+
+				</section>
+
+				<section data-markdown><script type="text/template">
+					## Generics
+
+					pass in type parameter
+
+					```rust
+					enum Option<T> {
+						Some(T),
+						None
+					}
+
+					fn radius(shape: Shape) -> Option<f64> {
+						match shape {
+							Circle(_, radius) => Some(radius),
+							Rectangle(..)     => None
+						}
+					}
+					```
+				</script></section>
+
+				<section data-markdown><script type="text/template">
+					## Traits
+
+					- similar to interfaces
+					- tool for polymorphism
+
+					```rust
+					trait Drawable { fn draw(&self); }
+
+					struct Circle { radius: f64 }
+					struct Square { length: f64 }
+
+					impl Drawable for Circle { fn draw(&self) { println!("circle"); } }
+					impl Drawable for Square { fn draw(&self) { println!("square"); } }
+
+					fn drawify<T: Drawable>(shape: T) {
+						shape.draw();
+					}
+					```
+				</script></section>
 
 				<section data-markdown>
 					<script type="text/template">
@@ -268,6 +443,7 @@
 
 						let x = Point { x: 1.0, y: 2.0 };
 						let y = Point { x: 10.0, y: 12.0 }
+						dist(&p1, &p2)
 						```
 						
 					</script>
